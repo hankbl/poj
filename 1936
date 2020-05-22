@@ -1,0 +1,73 @@
+/*
+
+最大公共子序列
+动态规划
+a[i] = b[j] : D[i][j] = D[i-1][j-1] + 1
+a[i] != b[j]: D[i][j] = max(D[i-1][j], D[i][j-1])
+
+*/
+
+#include "math.h"
+#include <stdio.h>
+#include <iostream>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+
+bool lcs(string s, string t)
+{
+	int m = s.length();
+	int n = t.length();
+	int* dp = new int[n];
+	int* temp = new int[n];
+	for (int i = 0; i < n; i++)
+	{
+		dp[i] = 0;
+		temp[i] = 0;
+	}
+
+	for (int i = 0; i < m; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+
+			if (s[i] == t[j])
+			{
+				int prev = j - 1 < 0 ? 0 : temp[j - 1];
+				dp[j] = prev + 1;//这一行是关键
+			}
+			else
+			{
+				int left = j - 1 < 0 ? 0 : dp[j - 1];
+				dp[j] = max(temp[j], left);
+			}
+		}
+		for (int j = 0; j < n; j++)
+		{
+			temp[j] = dp[j];
+		}
+	}
+	int longest = dp[n - 1];
+
+	delete[] dp;
+	delete[] temp;
+	return longest == m;
+}
+
+int main() {
+	string s, t;
+	while (cin >> s >> t)
+	{
+		if (lcs(s, t))
+		{
+			cout << "Yes" << endl;
+		}
+		else
+		{
+			cout << "No" << endl;
+		}
+	}
+
+	return 0;
+}
