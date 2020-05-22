@@ -1,0 +1,45 @@
+/*
+
+http://poj.org/problem?id=1995
+Raising Modulo Numbers
+
+算法导论 第31章 数论算法
+31.6 元素的幂
+
+*/
+#include<iostream>
+using namespace std;
+
+
+long f(long a, long k, long M) {//求a^k%M
+    long b = 1;
+    while (k >= 1) {
+        if (k % 2 == 1) {
+            b = a * b % M;
+        }
+        a = (a % M) * (a % M) % M;
+        k /= 2;
+    }
+    return b;
+}
+
+
+int main()
+{
+    int c;
+    cin >> c;
+    while (c--)
+    {
+        int m, n, val;
+        val = 0;
+        cin >> m >> n;
+        while (n--)
+        {
+            int a, b;
+            cin >> a >> b;
+            int z = f(a, b, m);
+            val = (val + z) % m;
+        }
+        cout << val << endl;
+    }
+}
