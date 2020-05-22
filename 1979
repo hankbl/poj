@@ -1,0 +1,55 @@
+/*
+
+http://poj.org/problem?id=1979
+
+递归实现DFS
+
+*/
+
+
+#include<iostream>
+#include<cstring>
+#include<map>
+using namespace std;
+bool flag[55][55];
+int width, length, num = 0;
+char s[55][55];
+void dfs(int i, int j)
+{
+    flag[i][j] = true;
+    if (i + 1 < width && s[i + 1][j] == '.' && flag[i + 1][j] == false)
+        dfs(i + 1, j);
+    if (i - 1 >= 0 && s[i - 1][j] == '.' && flag[i - 1][j] == false)
+        dfs(i - 1, j);
+    if (j + 1 < length && s[i][j + 1] == '.' && flag[i][j + 1] == false)
+        dfs(i, j + 1);
+    if (j - 1 >= 0 && s[i][j - 1] == '.' && flag[i][j - 1] == false)
+        dfs(i, j - 1);
+}
+int main()
+{
+    int n = 0, m = 0;
+    while ((cin >> length >> width) && width) {
+        num = 0;
+        memset(flag, false, sizeof(flag));
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < length; j++)
+            {
+                cin >> s[i][j];
+                if (s[i][j] == '@')
+                {
+                    n = i;
+                    m = j;
+                }
+            }
+        dfs(n, m);
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < length; j++)
+            {
+                if (flag[i][j])
+                    num++;
+            }
+        cout << num << endl;
+    }
+    return 0;
+}
