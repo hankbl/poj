@@ -1,0 +1,76 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
+#include <iostream>
+using namespace std;
+
+#define inf 0x3f3f3f3f
+#define N 10001
+
+int m[N];
+int dp[N];
+
+void init()
+{
+	for (int i = 0; i < N; i++)
+	{
+		m[i] = inf;
+		dp[i] = 1;
+	}
+}
+
+void LIS(int t)
+{
+	int res = dp[0];	//考虑只有一个数的情况
+	for (int i = 1; i < N; i++)
+	{
+		int max = 0;
+		int ans = 1;
+		for (int j = 0; j < i; j++)
+		{
+			if (m[i] < m[j])
+			{
+				ans = dp[j] + 1;
+				if (ans > max)
+				{
+					max = ans;
+				}
+			}
+		}
+		dp[i] = max;
+		if (max > res)
+		{
+			res = max;
+		}
+	}
+	printf("Test #%d:\n", t);
+	printf("  maximum possible interceptions: %d\n\n", res);
+}
+
+int main()
+{
+	bool end = false;
+	int h;
+	int index = 0;
+	int t = 0;
+	while (cin >> h)
+	{
+		if (end && h == -1)
+		{
+			break;
+		}
+		if (h != -1)
+		{
+			end = false;
+			m[index++] = h;
+		}
+		else
+		{
+			index = 0;
+			LIS(++t);
+			init();
+			end = true;
+		}
+	}
+	return 0;
+}
